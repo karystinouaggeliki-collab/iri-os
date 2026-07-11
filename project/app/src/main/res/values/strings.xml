@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">IRI Research Office VR</string>
+  <string name="address_hint">Search or enter any work URL</string>
+  <string name="ambience_on">Office: On</string>
+  <string name="ambience_off">Office: Off</string>
+  <string name="chrome_missing">Chrome is not installed. Deploy package com.android.chrome through device management.</string>
+  <string name="chrome_ready">Real Chrome ready: %1$s</string>
+</resources>
