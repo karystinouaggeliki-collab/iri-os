@@ -1,0 +1,82 @@
+name: Build Real Office Ambience
+
+on:
+  push:
+    branches:
+      - office-audio-build
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-audio:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download real CC0 field recording
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 4 \
+            'https://raw.githubusercontent.com/karoldepka/ComRev/a4afe8c292b668261d1cd01644999832bd194c44/fe/assets/sounds/bulk-office-clean-up-amb-2-708140.mp3' \
+            --output source-office-recording.mp3
+          test -s source-office-recording.mp3
+          ffprobe -v error -show_entries format=duration,size -of default=noprint_wrappers=1 source-office-recording.mp3
+
+      - name: Make seamless twelve-minute edition
+        shell: bash
+        run: |
+          set -euo pipefail
+          duration="$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 source-office-recording.mp3)"
+          fade="2.0"
+          body_end="$(python3 -c 'import sys; print(max(float(sys.argv[1])-float(sys.argv[2]), float(sys.argv[2])+0.1))' "$duration" "$fade")"
+
+          ffmpeg -hide_banner -loglevel error -y -i source-office-recording.mp3 \
+            -filter_complex "[0:a]asplit=3[bodyin][tailin][headin];[bodyin]atrim=start=${fade}:end=${body_end},asetpts=PTS-STARTPTS[body];[tailin]atrim=start=${body_end}:end=${duration},asetpts=PTS-STARTPTS[tail];[headin]atrim=start=0:end=${fade},asetpts=PTS-STARTPTS[head];[tail][head]acrossfade=d=${fade}:c1=tri:c2=tri[seam];[body][seam]concat=n=2:v=0:a=1[loop]" \
+            -map '[loop]' -ar 48000 -ac 2 -c:a pcm_s16le loop-base.wav
+
+          ffmpeg -hide_banner -loglevel error -y -stream_loop -1 -i loop-base.wav -t 720 \
+            -af 'afade=t=in:st=0:d=1,afade=t=out:st=719:d=1' \
+            -ar 48000 -ac 2 -c:a libvorbis -q:a 5 \
+            -metadata title='IRI Real Office Ambience — 12 Minutes' \
+            -metadata artist='keahnpot (field recording)' \
+            -metadata comment='Real CC0 office field recording. Seamless edit only; no AI or synthetic audio.' \
+            IRI-Real-Office-Ambience-12-Minutes.ogg
+
+          ffmpeg -hide_banner -loglevel error -y -stream_loop -1 -i loop-base.wav -t 720 \
+            -af 'afade=t=in:st=0:d=1,afade=t=out:st=719:d=1' \
+            -ar 48000 -ac 2 -c:a libmp3lame -b:a 160k \
+            -metadata title='IRI Real Office Ambience — 12 Minutes' \
+            -metadata artist='keahnpot (field recording)' \
+            -metadata comment='Real CC0 office field recording. Seamless edit only; no AI or synthetic audio.' \
+            IRI-Real-Office-Ambience-12-Minutes.mp3
+
+          sha256sum IRI-Real-Office-Ambience-12-Minutes.ogg IRI-Real-Office-Ambience-12-Minutes.mp3 > SHA256SUMS.txt
+          cat > SOURCE-AND-LICENSE.txt <<'EOF'
+          IRI Real Office Ambience — 12 Minutes
+
+          Source recording: Office clean up-AMB 2
+          Recorder/uploader: keahnpot
+          Source page: https://freesound.org/people/keahnpot/sounds/708140/
+          Source license: Creative Commons Zero (CC0)
+          Source mirror used: karoldepka/ComRev, commit a4afe8c292b668261d1cd01644999832bd194c44
+
+          Processing: lossless seam construction, looping, stereo conversion, resampling,
+          encoding, and one-second start/end fades. No AI generation, synthesis,
+          speech generation, or fabricated sound layers were used.
+          EOF
+
+          ffprobe -v error -show_entries format=duration,size,bit_rate -of json IRI-Real-Office-Ambience-12-Minutes.ogg > verification.json
+
+      - name: Upload finished audio
+        uses: actions/upload-artifact@v4
+        with:
+          name: IRI-Real-Office-Ambience-12-Minutes
+          path: |
+            IRI-Real-Office-Ambience-12-Minutes.ogg
+            IRI-Real-Office-Ambience-12-Minutes.mp3
+            SOURCE-AND-LICENSE.txt
+            SHA256SUMS.txt
+            verification.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
