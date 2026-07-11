@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/panel_root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/panel_background"
+  android:orientation="vertical"
+  android:padding="10dp">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="@color/toolbar_background"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="14dp"
+      android:text="IRI WORK CHROME"
+      android:textColor="@color/toolbar_text"
+      android:textSize="18sp"
+      android:textStyle="bold" />
+
+    <EditText
+      android:id="@+id/address_field"
+      android:layout_width="0dp"
+      android:layout_height="50dp"
+      android:layout_weight="1"
+      android:background="@drawable/address_background"
+      android:hint="@string/address_hint"
+      android:imeOptions="actionGo"
+      android:inputType="textUri"
+      android:maxLines="1"
+      android:selectAllOnFocus="true"
+      android:textColor="#172238"
+      android:textColorHint="#6B778A"
+      android:textSize="16sp" />
+
+    <Button
+      android:id="@+id/go_button"
+      style="@style/ToolbarButton"
+      android:text="Open" />
+
+    <Button
+      android:id="@+id/ambience_button"
+      style="@style/ToolbarButton"
+      android:text="Office: On" />
+  </LinearLayout>
+
+  <TextView
+    android:id="@+id/browser_mode_text"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="#E5F0E8"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="14dp"
+    android:text="Checking for Chrome…"
+    android:textColor="#173D25"
+    android:textSize="15sp"
+    android:textStyle="bold" />
+
+  <HorizontalScrollView
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:fillViewport="true"
+    android:scrollbars="none">
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      android:paddingHorizontal="8dp">
+      <Button android:id="@+id/chrome_button" style="@style/BookmarkButton" android:text="Chrome" />
+      <Button android:id="@+id/iri_button" style="@style/BookmarkButton" android:text="IRI" />
+      <Button android:id="@+id/ringgold_button" style="@style/BookmarkButton" android:text="Ringgold" />
+      <Button android:id="@+id/scholar_button" style="@style/BookmarkButton" android:text="Scholar" />
+      <Button android:id="@+id/jstor_button" style="@style/BookmarkButton" android:text="JSTOR" />
+      <Button android:id="@+id/cambridge_button" style="@style/BookmarkButton" android:text="Cambridge" />
+      <Button android:id="@+id/orcid_button" style="@style/BookmarkButton" android:text="ORCID" />
+      <Button android:id="@+id/microsoft_button" style="@style/BookmarkButton" android:text="Work Login" />
+    </LinearLayout>
+  </HorizontalScrollView>
+
+  <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:background="#FFFFFF"
+    android:fillViewport="true">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:padding="30dp">
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Secure Work Browser"
+        android:textColor="#172238"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Every address opens in the installed Chrome application. This office does not use an embedded WebView, spoof a browser identity, filter domains, intercept passwords, or rewrite sign-in redirects."
+        android:textColor="#31445F"
+        android:textSize="18sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:background="#EEF2F7"
+        android:padding="18dp"
+        android:text="Designed for institutional SSO, journals, Ringgold, banking portals, research databases, Microsoft work accounts, and iri.gen.ks.us. Chrome keeps its own cookies, certificates, passkeys, downloads, and authentication state."
+        android:textColor="#172238"
+        android:textSize="17sp" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Site acceptance still depends on the site’s own security policy, network reputation, MFA, device-management requirements, and any client certificates required by your organization."
+        android:textColor="#7A3A22"
+        android:textSize="15sp" />
+    </LinearLayout>
+  </ScrollView>
+
+  <TextView
+    android:id="@+id/status_text"
+    android:layout_width="match_parent"
+    android:layout_height="36dp"
+    android:background="@color/status_background"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="12dp"
+    android:text="IRI Research Office • Initializing"
+    android:textColor="@color/status_text"
+    android:textSize="13sp" />
+</LinearLayout>
