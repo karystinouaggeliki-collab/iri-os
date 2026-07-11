@@ -53,6 +53,7 @@ jobs:
             IRI-Research-Office-VR-Chrome-2.0.0-aligned-unsigned.apk
           cp "$ANDROID_HOME/build-tools/35.0.0/lib/apksigner.jar" apksigner.jar
           cp "$ANDROID_HOME/build-tools/35.0.0/zipalign" zipalign
+          cp -R "$ANDROID_HOME/build-tools/35.0.0/lib64" zipalign-lib64
           cat > BUILD-VERIFICATION.txt <<'TXT'
           IRI Research Office VR Chrome 2.0.0
           Package: org.irikansas.researchoffice
@@ -65,11 +66,12 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: IRI-Research-Office-VR-Chrome-2.0.0-build
+          name: IRI-Research-Office-VR-Chrome-2.0.0-build-tools
           path: |
             IRI-Research-Office-VR-Chrome-2.0.0-aligned-unsigned.apk
             apksigner.jar
             zipalign
+            zipalign-lib64
             BUILD-VERIFICATION.txt
             UNSIGNED-SHA256.txt
           compression-level: 0
