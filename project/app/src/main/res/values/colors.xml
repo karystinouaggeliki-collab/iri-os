@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="panel_background">#F7F8FA</color>
+  <color name="toolbar_background">#172238</color>
+  <color name="toolbar_text">#FFFFFF</color>
+  <color name="accent">#365C8D</color>
+  <color name="border">#CCD3DD</color>
+  <color name="status_background">#E8EDF4</color>
+  <color name="status_text">#27364A</color>
+</resources>
