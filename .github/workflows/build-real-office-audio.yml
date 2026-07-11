@@ -16,6 +16,11 @@ jobs:
   build-audio:
     runs-on: ubuntu-latest
     steps:
+      - name: Install audio tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes ffmpeg
+
       - name: Download real CC0 field recording
         run: |
           set -euo pipefail
